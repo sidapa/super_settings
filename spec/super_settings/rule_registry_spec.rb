@@ -30,5 +30,19 @@ describe SuperSettings::RuleRegistry do
       expect { SuperSettings::RuleRegistry.register(:lookup_key, 'test_value') }
         .to raise_error
     end
+
+    it 'should raise error if passing a non Hash value' do
+      expect { SuperSettings::RuleRegistry.register(:lookup_key, 'test') }
+        .to raise_error
+    end
+
+    it 'should raise error if registered hash is malformed' do
+      bad_hashes =  [{ k: 'no klass' }, { klass: 'no method' }]
+
+      bad_hashes.each do |bad_hash|
+        expect { SuperSettings::RuleRegistry.register(:lookup_key, bad_hash) }
+          .to raise_error
+      end
+    end
   end
 end
