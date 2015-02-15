@@ -4,6 +4,13 @@ module SuperSettings
     @value_hash = {}
 
     class << self
+      def method_missing(method_sym, *args, &block)
+        super unless @value_hash.keys.include? method_sym
+
+        result_hash = @value_hash[method_sym]
+        result_hash[:klass].send(result_hash[:method], *args)
+      end
+
       def register(key, value)
         fail "Key: #{key} already exists." if @value_hash.keys.include? key
 

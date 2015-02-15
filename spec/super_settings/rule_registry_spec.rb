@@ -15,7 +15,7 @@ describe SuperSettings::RuleRegistry do
   end
 
   context '.register' do
-    let(:registered_hash) { { test: 'only' } }
+    let(:registered_hash) { { klass: 'test', method: 'only' } }
     it 'should allow a rule to be registered to a lookup key' do
       SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
 
@@ -43,6 +43,17 @@ describe SuperSettings::RuleRegistry do
         expect { SuperSettings::RuleRegistry.register(:lookup_key, bad_hash) }
           .to raise_error
       end
+    end
+  end
+
+  context '.method_missing' do
+    let(:class_double) { double  }
+    let(:registered_hash) { { klass: class_double, method: :only } }
+    it 'should call the appropriate class method and forward value returned' do
+      SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
+
+      expect(class_double).to receive(:only)
+      SuperSettings::RuleRegistry.lookup_key
     end
   end
 end
