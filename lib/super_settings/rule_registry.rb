@@ -7,6 +7,8 @@ module SuperSettings
       def method_missing(method_sym, *args, &block)
         super unless @value_hash.keys.include? method_sym
 
+        # TODO: class_eval a new method to skip method missing for next calls
+
         result_hash = @value_hash[method_sym]
         result_hash[:klass].send(result_hash[:method], *args)
       end
