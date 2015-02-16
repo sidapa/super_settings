@@ -30,6 +30,12 @@ module SuperSettings
 
         @value_hash[key] = value
       end
+
+      def rules
+        @value_hash.keys.tap do |keys|
+          fail 'SuperSettings::RuleRegistry contains no rules' if keys.empty?
+        end
+      end
     end
   end
 end
