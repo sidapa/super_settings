@@ -56,4 +56,17 @@ describe SuperSettings::RuleRegistry do
       SuperSettings::RuleRegistry.lookup_key
     end
   end
+
+  context '.rules' do
+    let(:registered_hash) { { klass: double, method: :only } }
+    it 'display registered rules' do
+      SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
+
+      expect(SuperSettings::RuleRegistry.rules).to eql([:lookup_key])
+    end
+
+    it 'should fail if there are no registered rules' do
+      expect { SuperSettings::RuleRegistry.rules }.to raise_error
+    end
+  end
 end
