@@ -1,5 +1,9 @@
 module SuperSettings
   # RuleRegistry contains allows super_settings users to register themselves
+  # TODO: allow contexts for RuleRegistry
+  #       user_rule = SuperSettings::RuleRegistry.new(:users)
+  #       vehicle_rule  = SuperSettings::RuleRegistry.new(:vehicles)
+  #       vehicle_rule.wheel_count != user_rule.wheel_count
   class RuleRegistry
     @value_hash = {}
 
