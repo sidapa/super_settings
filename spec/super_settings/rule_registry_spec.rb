@@ -44,6 +44,11 @@ describe SuperSettings::RuleRegistry do
           .to raise_error
       end
     end
+
+    it 'should raise error if registering an existing method as key' do
+      expect { SuperSettings::RuleRegistry.register(:methods, registered_hash) }
+        .to raise_error
+    end
   end
 
   context '.method_missing' do

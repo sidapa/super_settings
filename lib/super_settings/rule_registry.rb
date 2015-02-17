@@ -22,6 +22,8 @@ module SuperSettings
 
         fail 'Value needs to be a hash.' unless value.is_a? Hash
 
+        fail "Method name: #{key} exists." if methods.include? key
+
         [:klass, :method].each do |hash_key|
           unless value.keys.include? hash_key
             fail "#{hash_key} key in registered value required."
