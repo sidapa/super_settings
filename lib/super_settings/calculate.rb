@@ -7,6 +7,8 @@ module SuperSettings
 
     class << self
       def register(operator, receiver)
+        fail if @operators.keys.include? operator
+
         @operators[operator] = receiver
       end
     end
