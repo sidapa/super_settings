@@ -29,6 +29,12 @@ describe SuperSettings::Calculate do
       expect(lookup_result).to eql(registered_operator)
     end
 
-    it 'should fail if operator has been registered'
+    it 'should fail if operator has been registered' do
+      SuperSettings::Calculate.register(:lookup_key, registered_operator)
+
+      expect { SuperSettings::Calculate.register(:lookup_key, registered_operator) }
+        .to raise_error
+
+    end
   end
 end
