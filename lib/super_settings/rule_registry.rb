@@ -14,7 +14,16 @@ module SuperSettings
         # TODO: class_eval a new method to skip method missing for next calls
 
         result_hash = @value_hash[method_sym]
-        result_hash[:klass].send(result_hash[:method], *args, &block)
+        result_value = result_hash[:klass]
+                       .send(result_hash[:method], *args, &block)
+
+        result_class = result_hash[:result_class]
+        if result_class
+          parsing_method = result_class.respond_to?(:parse) ? :parse : :new
+          result_value = result_class.send(parsing_method, result_value)
+        end
+
+        result_value
       end
 
       def register(key, value)
