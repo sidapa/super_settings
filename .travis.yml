@@ -10,5 +10,5 @@ rvm:
 before_script:
   - gem install rubocop
 script:
-  - rspec
-  - Rubocop
+  - bundle exec rspec
+  - bundle exec rubocop
