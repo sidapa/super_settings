@@ -17,13 +17,7 @@ module SuperSettings
         result_value = result_hash[:klass]
                        .send(result_hash[:method], *args, &block)
 
-        result_class = result_hash[:result_class]
-        if result_class
-          parsing_method = result_class.respond_to?(:parse) ? :parse : :new
-          result_value = result_class.send(parsing_method, result_value)
-        end
-
-        result_value
+        parse_result(result_hash[:result_class], result_value)
       end
 
       def register(key, value)
@@ -46,6 +40,15 @@ module SuperSettings
         @value_hash.keys.tap do |keys|
           fail 'SuperSettings::RuleRegistry contains no rules' if keys.empty?
         end
+      end
+
+      def parse_result(klass, value)
+        if klass
+          parsing_method = klass.respond_to?(:parse) ? :parse : :new
+          value = klass.send(parsing_method, value)
+        end
+
+        value
       end
     end
   end
