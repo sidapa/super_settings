@@ -4,7 +4,7 @@ describe SuperSettings::Calculate do
   before(:each) do
     # put registry in a temporary variable
     @operators_value_hash = SuperSettings::Calculate
-                              .instance_variable_get('@operators')
+                            .instance_variable_get('@operators')
     SuperSettings::Calculate.instance_variable_set('@operators', Hash.new)
   end
 
@@ -19,20 +19,20 @@ describe SuperSettings::Calculate do
   end
 
   context '.register' do
-    let(:registered_operator) { { klass: 'test', method: 'only' } }
+    let(:registered_op) { { klass: 'test', method: 'only' } }
 
     it 'should allow an operator to be registered' do
-      SuperSettings::Calculate.register(:lookup_key, registered_operator)
+      SuperSettings::Calculate.register(:lookup_key, registered_op)
 
       lookup_result = SuperSettings::Calculate
                       .instance_variable_get('@operators')[:lookup_key]
-      expect(lookup_result).to eql(registered_operator)
+      expect(lookup_result).to eql(registered_op)
     end
 
     it 'should fail if operator has been registered' do
-      SuperSettings::Calculate.register(:lookup_key, registered_operator)
+      SuperSettings::Calculate.register(:lookup_key, registered_op)
 
-      expect { SuperSettings::Calculate.register(:lookup_key, registered_operator) }
+      expect { SuperSettings::Calculate.register(:lookup_key, registered_op) }
         .to raise_error
 
     end
