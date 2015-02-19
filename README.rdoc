@@ -1,3 +1,3 @@
-= SuperSettings
+= SuperSettings {<img src="https://travis-ci.org/sidapa/super_settings.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/sidapa/super_settings]
 
 This project rocks and uses MIT-LICENSE.
