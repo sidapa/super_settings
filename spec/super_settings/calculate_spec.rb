@@ -14,27 +14,26 @@ describe SuperSettings::Calculate do
       .instance_variable_set('@operators', @operators_value_hash)
   end
 
-  context '.method_missing' do
-    it 'should call a registered operator if no method was found'
+  describe '.method_missing' do
+    it 'calls a registered operator if no method was found'
   end
 
-  context '.register' do
+  describe '.register' do
     let(:registered_op) { { klass: 'test', method: 'only' } }
 
-    it 'should allow an operator to be registered' do
+    before(:each) do
       SuperSettings::Calculate.register(:lookup_key, registered_op)
+    end
 
+    it 'allows an operator to be registered' do
       lookup_result = SuperSettings::Calculate
                       .instance_variable_get('@operators')[:lookup_key]
       expect(lookup_result).to eql(registered_op)
     end
 
-    it 'should fail if operator has been registered' do
-      SuperSettings::Calculate.register(:lookup_key, registered_op)
-
+    it 'fails when registering an already registered operator' do
       expect { SuperSettings::Calculate.register(:lookup_key, registered_op) }
         .to raise_error
-
     end
   end
 end

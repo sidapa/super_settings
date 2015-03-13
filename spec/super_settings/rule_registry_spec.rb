@@ -14,9 +14,10 @@ describe SuperSettings::RuleRegistry do
       .instance_variable_set('@value_hash', @settings_value_hash)
   end
 
-  context '.register' do
+  describe '.register' do
     let(:registered_hash) { { klass: 'test', method: 'only' } }
-    it 'should allow a rule to be registered to a lookup key' do
+
+    it 'allows a rule to be registered to a lookup key' do
       SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
 
       lookup_result = SuperSettings::RuleRegistry
@@ -24,19 +25,19 @@ describe SuperSettings::RuleRegistry do
       expect(lookup_result).to eql(registered_hash)
     end
 
-    it 'should raise an error if key already exists' do
+    it 'fails if key of the same name already exists' do
       SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
 
       expect { SuperSettings::RuleRegistry.register(:lookup_key, 'test_value') }
         .to raise_error
     end
 
-    it 'should raise error if passing a non Hash value' do
+    it 'fails if passed a non Hash value' do
       expect { SuperSettings::RuleRegistry.register(:lookup_key, 'test') }
         .to raise_error
     end
 
-    it 'should raise error if registered hash is malformed' do
+    it 'fails if the registered hash is malformed' do
       bad_hashes =  [{ k: 'no klass' }, { klass: 'no method' }]
 
       bad_hashes.each do |bad_hash|
@@ -45,18 +46,21 @@ describe SuperSettings::RuleRegistry do
       end
     end
 
-    it 'should raise error if registering an existing method as key' do
+    it 'fails if an existing method is registered as key' do
       expect { SuperSettings::RuleRegistry.register(:methods, registered_hash) }
         .to raise_error
     end
   end
 
-  context '.method_missing' do
+  describe '.method_missing' do
     let(:class_double) { double }
     let(:registered_hash) { { klass: class_double, method: :only } }
 
-    it 'should call the appropriate class method and forward value returned' do
+    before(:each) do
       SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
+    end
+
+    it 'calls the appropriate class method and forwards value returned' do
 
       expect(class_double).to receive(:only)
       SuperSettings::RuleRegistry.lookup_key
@@ -74,31 +78,30 @@ describe SuperSettings::RuleRegistry do
       end
 
       before(:each) do
-        SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
         allow(class_double).to receive(:only).and_return(result_double)
       end
 
-      it 'should call new if parse is not supported' do
+      it 'calls new if parse is not supported' do
         expect(result_class_double).to receive(:new).with(result_double)
         SuperSettings::RuleRegistry.lookup_key
       end
 
-      it 'should shove result into a result class if it exists' do
+      it 'shoves the result into a result class if it exists' do
         expect(result_class_double).to receive(:parse).with(result_double)
         SuperSettings::RuleRegistry.lookup_key
       end
     end
   end
 
-  context '.rules' do
+  describe '.rules' do
     let(:registered_hash) { { klass: double, method: :only } }
-    it 'display registered rules' do
+    it 'displays registered rules' do
       SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
 
       expect(SuperSettings::RuleRegistry.rules).to eql([:lookup_key])
     end
 
-    it 'should fail if there are no registered rules' do
+    it 'fails if there are no registered rules' do
       expect { SuperSettings::RuleRegistry.rules }.to raise_error
     end
   end
