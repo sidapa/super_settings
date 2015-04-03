@@ -15,7 +15,18 @@ describe SuperSettings::Calculate do
   end
 
   describe '.method_missing' do
-    it 'calls a registered operator if no method was found'
+    let(:op_class) { double }
+    let(:registered_op) { { klass: op_class, method: 'test_method' } }
+
+    it 'checks the registry for method names and calls it' do
+      SuperSettings::Calculate.register(:lookup_key, registered_op)
+      expect(op_class).to receive(:test_method)
+      SuperSettings::Calculate.lookup_key
+    end
+
+    it 'forward to super if no it has no matching methods' do
+      expect { SuperSettings::Calculate.no_method }.to raise_error NoMethodError
+    end
   end
 
   describe '.register' do
