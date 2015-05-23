@@ -16,40 +16,56 @@ describe SuperSettings::RuleRegistry do
 
   describe '.register' do
     let(:registered_hash) { { klass: 'test', method: 'only' } }
-
-    it 'allows a rule to be registered to a lookup key' do
-      SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
-
-      lookup_result = SuperSettings::RuleRegistry
-                      .instance_variable_get('@value_hash')[:lookup_key]
-      expect(lookup_result).to eql(registered_hash)
+    let(:lookup_key) { :lookup_key }
+    let(:register) do
+      SuperSettings::RuleRegistry.register(lookup_key, registered_hash)
     end
 
-    it 'fails if key of the same name already exists' do
-      SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
+    context 'valid parameters' do
 
-      expect { SuperSettings::RuleRegistry.register(:lookup_key, 'test_value') }
-        .to raise_error
-    end
+      context 'with key that has not been registered' do
+        subject(:registered_value) do
+          SuperSettings::RuleRegistry
+            .instance_variable_get('@value_hash')[:lookup_key]
+        end
 
-    it 'fails if passed a non Hash value' do
-      expect { SuperSettings::RuleRegistry.register(:lookup_key, 'test') }
-        .to raise_error
-    end
+        before(:each) { register }
+        it { is_expected.to eql(registered_hash) }
+      end
 
-    it 'fails if the registered hash is malformed' do
-      bad_hashes =  [{ k: 'no klass' }, { klass: 'no method' }]
+      context 'with key that matches an existing method' do
+        let(:lookup_key) { :methods }
+        it { expect { register }.to raise_error }
+      end
 
-      bad_hashes.each do |bad_hash|
-        expect { SuperSettings::RuleRegistry.register(:lookup_key, bad_hash) }
-          .to raise_error
+      it 'fails if key of the same name already exists' do
+        register
+        expect do
+          SuperSettings::RuleRegistry.register(:lookup_key, registered_hash)
+        end.to raise_error
       end
     end
 
-    it 'fails if an existing method is registered as key' do
-      expect { SuperSettings::RuleRegistry.register(:methods, registered_hash) }
-        .to raise_error
+    context 'invalid parameters' do
+      context 'malformed registered_hash' do
+        context 'non hash value' do
+          let(:registered_hash) { 'test' }
+          it { expect { register }.to raise_error }
+        end
+
+        context 'no klass' do
+          let(:registered_hash) { { k: 'no klass' } }
+          it { expect { register }.to raise_error }
+        end
+
+        context 'no method' do
+          let(:registered_hash) { { klass: 'no method' } }
+          it { expect { register }.to raise_error }
+        end
+        context 'no method'
+      end
     end
+
   end
 
   describe '.method_missing' do
