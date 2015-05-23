@@ -17,7 +17,7 @@ describe SuperSettings::RuleKeyParser do
       end
     end
     context 'valid params' do
-      subject(:value) { SuperSettings::RuleKeyParser.new(param).value }
+      subject(:keys) { SuperSettings::RuleKeyParser.new(param).keys }
 
       context 'param is a string' do
         let(:param) { 'test' }

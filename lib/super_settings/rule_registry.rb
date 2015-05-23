@@ -21,17 +21,20 @@ module SuperSettings
       end
 
       def register(key, value)
-        fail "Key: #{key} already exists." if @value_hash.keys.include? key
-
         fail 'Value needs to be a hash.' unless value.is_a? Hash
-
-        fail "Method name: #{key} exists." if methods.include? key
 
         [:klass, :method].each do |hash_key|
           unless value.keys.include? hash_key
             fail "#{hash_key} key in registered value required."
           end
         end
+
+        RuleKeyParser.new(key).keys.each { |k| register_single(k, value) }
+      end
+
+      def register_single(key, value)
+        fail "Key: #{key} already exists." if @value_hash.keys.include? key
+        fail "Method name: #{key} exists." if methods.include? key
 
         @value_hash[key] = value
       end
