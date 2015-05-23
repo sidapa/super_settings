@@ -22,7 +22,6 @@ describe SuperSettings::RuleRegistry do
     end
 
     context 'valid parameters' do
-
       context 'with key that has not been registered' do
         subject(:registered_value) do
           SuperSettings::RuleRegistry
@@ -31,6 +30,17 @@ describe SuperSettings::RuleRegistry do
 
         before(:each) { register }
         it { is_expected.to eql(registered_hash) }
+      end
+
+      context 'with ore than one keys' do
+        subject(:registered_keys) do
+          SuperSettings::RuleRegistry
+            .instance_variable_get('@value_hash').keys
+        end
+        let(:lookup_key) { [:key1, :key2] }
+
+        before(:each) { register }
+        it { is_expected.to eql(lookup_key) }
       end
 
       context 'with key that matches an existing method' do
