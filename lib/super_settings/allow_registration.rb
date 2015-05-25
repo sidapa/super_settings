@@ -1,5 +1,5 @@
 module SuperSettings
-  module Registerable
+  module AllowRegistration
     def value_hash
       fail NotImplementedError, 'value_hash required by SuperSettings::Registerable'
     end
