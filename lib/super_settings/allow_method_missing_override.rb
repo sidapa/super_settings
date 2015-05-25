@@ -5,7 +5,7 @@ module SuperSettings
   # which holds value information) and process_value (which gets called after
   # the value is extracted from the value_hash and, by default, merely returns
   # the value from the hash)
-  module AutoCallable
+  module AllowMethodMissingOverride
     # value_hash provides an AutoCallable object with a target key-value pair to check
     # method missing against. This template needs to be implemented by a class
     # mixing in the AutoCallable module.
