@@ -18,8 +18,8 @@ module SuperSettings
     # funtionality
     # TODO: check for block given, and yield to block passing
     # value as parameter
-    def process_value(value, *args, &block)
-      value
+    def process_value(value)
+      block_given? ? yield(value) : value
     end
 
     def method_missing(method_sym, *args, &block)
