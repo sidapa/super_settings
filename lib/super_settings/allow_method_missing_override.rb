@@ -30,5 +30,9 @@ module SuperSettings
 
       process_value(value_hash[method_sym], *args, &block)
     end
+
+    def respond_to_missing?(method, *)
+      value_hash.keys.include?(method) || super
+    end
   end
 end
