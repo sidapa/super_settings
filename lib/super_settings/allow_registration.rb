@@ -1,15 +1,17 @@
 module SuperSettings
+  # AllowRegistration provides a class using it registration
+  # functionality
   module AllowRegistration
     def value_hash
-      fail NotImplementedError, 'value_hash required by SuperSettings::Registerable'
+      fail NotImplementedError, 'Registerable requires value_hash'
     end
 
     # This method will check value and raise errors if value fails validation.
     # TODO: turn this into a helper_method a la ActiveRecord's .validates
-    # - Add validations array which gets called in order. each entry points to 
+    # - Add validations array which gets called in order. each entry points to
     # a method implemented by the child class
-    def validate_value(value)
-      fail NotImplementedError, 'value_validator required by SuperSettings::Registerable'
+    def validate_value(_value)
+      fail NotImplementedError, 'Registerable requires value_validator'
     end
 
     def register(key, value)

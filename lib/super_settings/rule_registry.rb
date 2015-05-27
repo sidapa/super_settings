@@ -4,7 +4,6 @@ module SuperSettings
   #       user_rule = SuperSettings::RuleRegistry.new(:users)
   #       vehicle_rule  = SuperSettings::RuleRegistry.new(:vehicles)
   #       vehicle_rule.wheel_count != user_rule.wheel_count
-
   module RuleRegistry
     extend SuperSettings::AllowRegistration
     extend SuperSettings::AllowMethodMissingOverride
@@ -12,10 +11,14 @@ module SuperSettings
     module_function
 
     @value_hash = {}
-
+    # This overrides value_hash declaration from AllowRegistration
+    # and AllowMethodMissingOverride
+    # TODO: Maybe change this with a helper method?
+    # rubocop:disable Style/TrivialAccessors
     def value_hash
       @value_hash
     end
+    # rubocop:enable Style/TrivialAccessors
 
     def validate_value(value)
       fail 'Value needs to be a hash.' unless value.is_a? Hash

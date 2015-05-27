@@ -6,11 +6,11 @@ module SuperSettings
   # the value is extracted from the value_hash and, by default, merely returns
   # the value from the hash)
   module AllowMethodMissingOverride
-    # value_hash provides an AutoCallable object with a target key-value pair to check
-    # method missing against. This template needs to be implemented by a class
-    # mixing in the AutoCallable module.
+    # value_hash provides an AutoCallable object with a target key-value pair
+    # to check method missing against. This template needs to be implemented
+    # by a class mixing in the AutoCallable module.
     def value_hash
-      fail NotImplementedError, 'value_hash required by SuperSettings::AutoCallable'
+      fail NotImplementedError, 'AutoCallable requires value_hash'
     end
 
     # By default, AutoCallable will return the value in the value_hash
