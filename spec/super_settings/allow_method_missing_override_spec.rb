@@ -37,7 +37,7 @@ describe SuperSettings::AllowMethodMissingOverride do
     before(:each) do
       allow(extending_class)
         .to receive(:value_hash)
-        .and_return({ foo: 'bar' })
+        .and_return(foo: 'bar')
     end
 
     context 'method in value_hash' do
@@ -49,7 +49,7 @@ describe SuperSettings::AllowMethodMissingOverride do
     context 'method in value_hash' do
       let(:key) { :foo }
 
-      it { is_expected.to  respond_to key }
+      it { is_expected.to respond_to key }
     end
   end
 end

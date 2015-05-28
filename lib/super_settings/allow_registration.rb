@@ -2,7 +2,6 @@ module SuperSettings
   # AllowRegistration provides a class using it registration
   # functionality
   module AllowRegistration
-
     def value_hash
       fail NotImplementedError, 'Registerable requires value_hash'
     end
