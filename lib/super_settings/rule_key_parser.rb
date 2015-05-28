@@ -9,17 +9,14 @@ module SuperSettings
       valid_params = %w(String Symbol)
 
       @keys = arr_params.map do |param|
-        parameter_failure! unless valid_params.include? param.class.to_s
+        unless valid_params.include? param.class.to_s
+          fail SuperSettings::Error, 'Invalid Parameter'
+        end
+
         param.to_sym
       end
 
       @keys.uniq!
-    end
-
-    private
-
-    def parameter_failure!
-      fail SuperSettings::Error, 'Invalid Parameter'
     end
   end
 end
