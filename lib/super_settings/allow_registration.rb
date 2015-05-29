@@ -6,17 +6,33 @@ module SuperSettings
       fail NotImplementedError, 'Registerable requires value_hash'
     end
 
-    # This method will check value and raise errors if value fails validation.
-    # TODO: turn this into a helper_method a la ActiveRecord's .validates
-    # - Add validations array which gets called in order. each entry points to
-    # a method implemented by the child class
-    def validate_value(_value)
-      fail NotImplementedError, 'Registerable requires value_validator'
+    def validate_value_with(validators)
+      # TODO: @validators_list could be its own class or
+      # a validator could be its own class
+      @validators_list = [] if @validators_list.nil?
+
+      Array(validators).each do |validator|
+        unless validator.is_a? Symbol
+          fail Error, 'validate_value_with needs a symbol'
+        end
+
+        if @validators_list.include? validator
+          fail Error, "#{validator} has already been defined"
+        end
+
+        @validators_list << validator
+      end
+    end
+
+    def run_validations(value)
+      return true if @validators_list.nil? || @validators_list.empty?
+      @validators_list.each do |validator_method|
+        send(validator_method, value)
+      end
     end
 
     def register(key, value)
-      validate_value(value)
-
+      return unless run_validations(value)
       RuleKeyParser.new(key).keys.each { |k| register_single(k, value) }
     end
 

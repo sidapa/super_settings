@@ -16,8 +16,6 @@ module SuperSettings
     # By default, AutoCallable will return the value in the value_hash
     # override this method if you wish to have a different sort of
     # funtionality
-    # TODO: check for block given, and yield to block passing
-    # value as parameter
     def process_value(value)
       block_given? ? yield(value) : value
     end

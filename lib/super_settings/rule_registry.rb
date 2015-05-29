@@ -8,6 +8,9 @@ module SuperSettings
     extend SuperSettings::AllowRegistration
     extend SuperSettings::AllowMethodMissingOverride
 
+    validate_value_with :must_be_hash
+    validate_value_with :must_have_required_keys
+
     module_function
 
     @value_hash = {}
@@ -20,9 +23,11 @@ module SuperSettings
     end
     # rubocop:enable Style/TrivialAccessors
 
-    def validate_value(value)
+    def must_be_hash(value)
       fail 'Value needs to be a hash.' unless value.is_a? Hash
+    end
 
+    def must_have_required_keys(value)
       [:klass, :method].each do |hash_key|
         unless value.keys.include? hash_key
           fail "#{hash_key} key in registered value required."
