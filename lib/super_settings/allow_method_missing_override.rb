@@ -10,7 +10,7 @@ module SuperSettings
     # to check method missing against. This template needs to be implemented
     # by a class mixing in the AutoCallable module.
     def value_hash
-      fail NotImplementedError, 'AutoCallable requires value_hash'
+      @value_hash ||= {}
     end
 
     # By default, AutoCallable will return the value in the value_hash
@@ -20,11 +20,10 @@ module SuperSettings
       block_given? ? yield(value) : value
     end
 
+    # TODO: class_eval a new method to skip method missing for next calls
+    # - Research whether or not torquebox will suffer
     def method_missing(method_sym, *args, &block)
       super unless value_hash.keys.include? method_sym
-
-      # TODO: class_eval a new method to skip method missing for next calls
-      # - Research whether or not torquebox will suffer
 
       process_value(value_hash[method_sym], *args, &block)
     end

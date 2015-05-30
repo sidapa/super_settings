@@ -13,16 +13,6 @@ module SuperSettings
 
     module_function
 
-    @value_hash = {}
-    # This overrides value_hash declaration from AllowRegistration
-    # and AllowMethodMissingOverride
-    # TODO: Maybe change this with a helper method?
-    # rubocop:disable Style/TrivialAccessors
-    def value_hash
-      @value_hash
-    end
-    # rubocop:enable Style/TrivialAccessors
-
     def must_be_hash(value)
       fail 'Value needs to be a hash.' unless value.is_a? Hash
     end
