@@ -69,7 +69,7 @@ describe SuperSettings::AllowRegistration do
       end
     end
 
-    let(:test_methods) { [:foo, :test] }
+    let(:test_methods) { [:foo, :bar] }
 
     context '@validators_list is invalid' do
       before(:each) do

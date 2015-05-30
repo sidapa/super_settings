@@ -19,7 +19,7 @@ module SuperSettings
 
         result_hash = @operators[method_sym]
         result_hash[:klass]
-          .send(result_hash[:method], *args, &block)
+          .public_send(result_hash[:method], *args, &block)
       end
     end
   end

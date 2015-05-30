@@ -27,7 +27,7 @@ module SuperSettings
     def run_validations(value)
       return true if @validators_list.nil? || @validators_list.empty?
       @validators_list.each do |validator_method|
-        send(validator_method, value)
+        public_send(validator_method, value)
       end
     end
 
