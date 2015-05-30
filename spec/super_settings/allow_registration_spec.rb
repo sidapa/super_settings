@@ -10,7 +10,19 @@ describe SuperSettings::AllowRegistration do
   describe '#value_hash' do
     subject(:value_hash_method) { extending_class.value_hash }
 
-    it { expect { value_hash_method }.to raise_error NotImplementedError }
+    context 'where @value_hash is not set' do
+      it { is_expected.to eql({}) }
+    end
+
+    context 'where @value_hash is set' do
+      before(:each) do
+        extending_class.instance_variable_set(:@value_hash, vh_value)
+      end
+
+      let(:vh_value) { { foo: 'bar' } }
+
+      it { is_expected.to eql(vh_value) }
+    end
   end
 
   describe '#validate_value_with' do
