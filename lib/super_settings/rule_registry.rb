@@ -37,7 +37,7 @@ module SuperSettings
 
     def process_value(value, *args, &block)
       result_value = value[:klass]
-                     .send(value[:method], *args, &block)
+                     .public_send(value[:method], *args, &block)
 
       parse_result(value[:result_class], result_value)
     end
@@ -51,7 +51,7 @@ module SuperSettings
     def parse_result(klass, value)
       if klass
         parsing_method = klass.respond_to?(:parse) ? :parse : :new
-        value = klass.send(parsing_method, value)
+        value = klass.public_send(parsing_method, value)
       end
 
       value
