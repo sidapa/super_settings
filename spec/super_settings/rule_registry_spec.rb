@@ -3,15 +3,15 @@ require 'spec_helper'
 describe SuperSettings::RuleRegistry do
   before(:each) do
     # put registry in a temporary variable
-    @settings_value_hash = SuperSettings::RuleRegistry
-                           .instance_variable_get('@value_hash')
-    SuperSettings::RuleRegistry.instance_variable_set('@value_hash', Hash.new)
+    @settings_value_data = SuperSettings::RuleRegistry
+                           .instance_variable_get('@value_data')
+    SuperSettings::RuleRegistry.instance_variable_set('@value_data', Hash.new)
   end
 
   after(:each) do
     # return registry values
     SuperSettings::RuleRegistry
-      .instance_variable_set('@value_hash', @settings_value_hash)
+      .instance_variable_set('@value_data', @settings_value_data)
   end
 
   describe '.register' do
@@ -25,7 +25,7 @@ describe SuperSettings::RuleRegistry do
       context 'with key that has not been registered' do
         subject(:registered_value) do
           SuperSettings::RuleRegistry
-            .instance_variable_get('@value_hash')[:lookup_key]
+            .instance_variable_get('@value_data')[:lookup_key]
         end
 
         before(:each) { register }
@@ -35,7 +35,7 @@ describe SuperSettings::RuleRegistry do
       context 'with ore than one keys' do
         subject(:registered_keys) do
           SuperSettings::RuleRegistry
-            .instance_variable_get('@value_hash').keys
+            .instance_variable_get('@value_data').keys
         end
         let(:lookup_key) { [:key1, :key2] }
 

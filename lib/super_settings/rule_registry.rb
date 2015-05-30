@@ -33,7 +33,7 @@ module SuperSettings
     end
 
     def rules
-      value_hash.keys.tap do |keys|
+      value_data.keys.tap do |keys|
         fail 'SuperSettings::RuleRegistry contains no rules' if keys.empty?
       end
     end

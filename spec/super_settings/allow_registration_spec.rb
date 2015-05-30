@@ -7,16 +7,16 @@ describe SuperSettings::AllowRegistration do
     Class.new { extend SuperSettings::AllowRegistration }
   end
 
-  describe '#value_hash' do
-    subject(:value_hash_method) { extending_class.value_hash }
+  describe '#value_data' do
+    subject(:value_data_method) { extending_class.value_data }
 
-    context 'where @value_hash is not set' do
+    context 'where @value_data is not set' do
       it { is_expected.to eql({}) }
     end
 
-    context 'where @value_hash is set' do
+    context 'where @value_data is set' do
       before(:each) do
-        extending_class.instance_variable_set(:@value_hash, vh_value)
+        extending_class.instance_variable_set(:@value_data, vh_value)
       end
 
       let(:vh_value) { { foo: 'bar' } }

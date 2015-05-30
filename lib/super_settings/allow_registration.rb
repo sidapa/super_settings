@@ -2,8 +2,8 @@ module SuperSettings
   # AllowRegistration provides a class using it registration
   # functionality
   module AllowRegistration
-    def value_hash
-      @value_hash ||= {}
+    def value_data
+      @value_data ||= {}
     end
 
     def validate_value_with(validators)
@@ -37,11 +37,11 @@ module SuperSettings
     end
 
     def register_single(key, value)
-      fail "Key: #{key} already exists." if value_hash.keys.include? key
+      fail "Key: #{key} already exists." if value_data.keys.include? key
 
       # TODO: Only check for exiting methods if also using method_missing
       fail "Method name: #{key} exists." if methods.include? key
-      value_hash[key] = value
+      value_data[key] = value
     end
   end
 end

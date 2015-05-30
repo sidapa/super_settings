@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SuperSettings::Calculate do
   before(:each) do
     # put registry in a temporary variable
-    @operators_value_hash = SuperSettings::Calculate
+    @operators_value_data = SuperSettings::Calculate
                             .instance_variable_get('@operators')
     SuperSettings::Calculate.instance_variable_set('@operators', Hash.new)
   end
@@ -11,7 +11,7 @@ describe SuperSettings::Calculate do
   after(:each) do
     # return registry values
     SuperSettings::Calculate
-      .instance_variable_set('@operators', @operators_value_hash)
+      .instance_variable_set('@operators', @operators_value_data)
   end
 
   describe '.method_missing' do

@@ -7,16 +7,16 @@ describe SuperSettings::AllowMethodMissingOverride do
     Class.new { extend SuperSettings::AllowMethodMissingOverride }
   end
 
-  describe '#value_hash' do
-    subject(:value_hash_method) { extending_class.value_hash }
+  describe '#value_data' do
+    subject(:value_data_method) { extending_class.value_data }
 
-    context 'where @value_hash is not set' do
+    context 'where @value_data is not set' do
       it { is_expected.to eql({}) }
     end
 
-    context 'where @value_hash is set' do
+    context 'where @value_data is set' do
       before(:each) do
-        extending_class.instance_variable_set(:@value_hash, vh_value)
+        extending_class.instance_variable_set(:@value_data, vh_value)
       end
 
       let(:vh_value) { { foo: 'bar' } }
@@ -48,17 +48,17 @@ describe SuperSettings::AllowMethodMissingOverride do
 
     before(:each) do
       allow(extending_class)
-        .to receive(:value_hash)
+        .to receive(:value_data)
         .and_return(foo: 'bar')
     end
 
-    context 'method in value_hash' do
+    context 'method in value_data' do
       let(:key) { :not_foo }
 
       it { is_expected.not_to respond_to key }
     end
 
-    context 'method in value_hash' do
+    context 'method in value_data' do
       let(:key) { :foo }
 
       it { is_expected.to respond_to key }
