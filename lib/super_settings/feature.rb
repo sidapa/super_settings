@@ -3,10 +3,11 @@ module SuperSettings
   class Feature
     # TODO: Allow user to set a default value when using hashes
     def initialize(value)
-      unless [::TrueClass, ::FalseClass, ::Hash].include? value.class
+      value_class = value.class
+      unless [::TrueClass, ::FalseClass, ::Hash].include? value_class
         fail Error, 'Feature requires a boolean or hash'
       end
-      @value = value.class == ::Hash ? check_hash_value(value) : value
+      @value = value_class == ::Hash ? check_hash_value(value) : value
     end
 
     def set?(context = nil)
