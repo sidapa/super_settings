@@ -72,6 +72,20 @@ describe SuperSettings::Feature do
 
         it { is_expected.to eql(true) }
       end
+
+      context 'more than 1 context key' do
+        let(:toggle) { { default: default_value, foo: 'bar', fiz: [1, 2, 3] } }
+
+        context 'all keys match' do
+          let(:context) { { foo: 'bar', fiz: 1 } }
+          it { is_expected.to eql(true) }
+        end
+
+        context 'not all keys match' do
+          let(:context) { { foo: 'bar', fiz: 5 } }
+          it { is_expected.to eql(false) }
+        end
+      end
     end
   end
 end

@@ -11,10 +11,7 @@ module SuperSettings
 
     def set?(context = nil)
       if context.class == ::Hash
-        context.each_pair do |k, v|
-          return @value[:default] unless @value.keys.include? k
-          return Array(@value[k]).include? v
-        end
+        check_each_key(context)
       elsif !context.nil?
         @value == context
       else
@@ -23,6 +20,14 @@ module SuperSettings
     end
 
     private
+
+    def check_each_key(context)
+      context.each_pair do |k, v|
+        return @value[:default] unless @value.keys.include? k
+        return false unless Array(@value[k]).include? v
+      end
+      true
+    end
 
     def check_hash_value(value)
       value.tap do |v|
