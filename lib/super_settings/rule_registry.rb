@@ -29,7 +29,8 @@ module SuperSettings
       result_value = value[:klass]
                      .public_send(value[:method], *args, &block)
 
-      parse_result(value[:result_class], result_value)
+      parsed_value = parse_result(value[:result_class], result_value)
+      block_given? ? yield(parsed_value) : parsed_value
     end
 
     def rules

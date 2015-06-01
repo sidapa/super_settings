@@ -117,6 +117,22 @@ describe SuperSettings::RuleRegistry do
         SuperSettings::RuleRegistry.lookup_key
       end
     end
+
+    context 'with block' do
+      before(:each) do
+        allow(class_double).to receive(:only).and_return(1)
+      end
+
+      let(:lookup_block) do
+        SuperSettings::RuleRegistry.lookup_key do |v|
+          v.to_s
+        end
+      end
+
+      it 'passes the class value to a block if given' do
+        expect(lookup_block).to eql('1')
+      end
+    end
   end
 
   describe '.rules' do
