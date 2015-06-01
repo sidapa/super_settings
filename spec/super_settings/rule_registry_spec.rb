@@ -75,7 +75,6 @@ describe SuperSettings::RuleRegistry do
         context 'no method'
       end
     end
-
   end
 
   describe '.method_missing' do
@@ -87,7 +86,6 @@ describe SuperSettings::RuleRegistry do
     end
 
     it 'calls the appropriate class method and forwards value returned' do
-
       expect(class_double).to receive(:only)
       SuperSettings::RuleRegistry.lookup_key
     end
@@ -124,9 +122,7 @@ describe SuperSettings::RuleRegistry do
       end
 
       let(:lookup_block) do
-        SuperSettings::RuleRegistry.lookup_key do |v|
-          v.to_s
-        end
+        SuperSettings::RuleRegistry.lookup_key(&:to_s)
       end
 
       it 'passes the class value to a block if given' do
