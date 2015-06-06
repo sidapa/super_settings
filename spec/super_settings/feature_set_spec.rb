@@ -1,15 +1,11 @@
 require 'spec_helper'
 
 describe SuperSettings::FeatureSet do
-  let(:parser) do
-    # This is just a sample class
-    class DoubleTest
-      def self.call
-        true
-      end
-    end
-    DoubleTest
-  end
+  let(:parser) { parser_double }
+  let(:parser_double) { double() }
+
+  before(:each) { allow(parser_double).to receive(:call) }
+  after(:each) { SuperSettings::FeatureSet.instance_variable_set(:@parsers, []) }
 
   describe '::config' do
     subject(:configuration) do
@@ -43,6 +39,7 @@ describe SuperSettings::FeatureSet do
     end
 
     context 'Parser content' do
+      before(:each) { add_parser }
       it { expect(parsers).to eql([parser]) }
     end
 
@@ -63,7 +60,7 @@ describe SuperSettings::FeatureSet do
     subject(:run_parse) { SuperSettings::FeatureSet.parse_configuration }
 
     it 'calls the call method on each of the parsers' do
-      expect(DoubleTest).to receive(:call).with(configuration)
+      expect(parser).to receive(:call).with(configuration)
       run_parse
     end
   end
