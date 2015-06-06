@@ -2,10 +2,12 @@ require 'spec_helper'
 
 describe SuperSettings::FeatureSet do
   let(:parser) { parser_double }
-  let(:parser_double) { double() }
+  let(:parser_double) { double }
 
   before(:each) { allow(parser_double).to receive(:call) }
-  after(:each) { SuperSettings::FeatureSet.instance_variable_set(:@parsers, []) }
+  after(:each) do
+    SuperSettings::FeatureSet.instance_variable_set(:@parsers, [])
+  end
 
   describe '::config' do
     subject(:configuration) do
