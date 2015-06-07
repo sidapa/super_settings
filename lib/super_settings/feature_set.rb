@@ -28,5 +28,14 @@ module SuperSettings
       fail Error, 'call method required' unless parser.respond_to? :call
       @parsers << parser
     end
+
+    def add_feature(name, feature)
+      register(name, feature)
+    end
+
+    def process_value(value, *args)
+      toggle_value = value.send(:set?, *args)
+      block_given? ? yield(toggle_value) : toggle_value
+    end
   end
 end

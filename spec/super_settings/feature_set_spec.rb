@@ -66,4 +66,35 @@ describe SuperSettings::FeatureSet do
       run_parse
     end
   end
+
+  describe 'feature usage' do
+    subject(:add_feature_method) do
+      SuperSettings::FeatureSet.add_feature(feature_name, feature)
+    end
+
+    let(:feature) { SuperSettings::Feature.new set_value }
+    let(:feature_name) { :foo }
+    let(:value_data) { SuperSettings::FeatureSet.value_data }
+    let(:set_value) { true }
+
+    after(:each) { SuperSettings::FeatureSet.reset! }
+
+    describe '::add_feature' do
+      it { expect { add_feature_method }.to change { value_data.size }.by(1) }
+
+      it 'uses the feature passed' do
+        add_feature_method
+        expect(SuperSettings::FeatureSet.foo).to eql(set_value)
+      end
+    end
+
+    describe '::process_value' do
+      it { expect { add_feature_method }.to change { value_data.size }.by(1) }
+
+      it 'uses the feature passed' do
+        add_feature_method
+        expect(SuperSettings::FeatureSet.foo).to eql(set_value)
+      end
+    end
+  end
 end
