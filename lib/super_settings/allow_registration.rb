@@ -43,5 +43,9 @@ module SuperSettings
       fail "Method name: #{key} exists." if methods.include? key
       value_data[key] = value
     end
+
+    def reset!
+      @value_data = {}
+    end
   end
 end

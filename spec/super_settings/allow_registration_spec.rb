@@ -113,4 +113,19 @@ describe SuperSettings::AllowRegistration do
       extending_class.run_validations(1)
     end
   end
+
+  describe '::reset!' do
+    let(:vh_value) { 1 }
+    subject(:reset_method) { extending_class.reset! }
+
+    before(:each) do
+      extending_class.instance_variable_set(:@value_data, vh_value)
+    end
+
+    it 'resets @value_data to an empty hash' do
+      expect { reset_method }.to change {
+        extending_class.instance_variable_get :@value_data
+      }.to({})
+    end
+  end
 end
