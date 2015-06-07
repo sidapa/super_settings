@@ -81,19 +81,23 @@ describe SuperSettings::FeatureSet do
 
     describe '::add_feature' do
       it { expect { add_feature_method }.to change { value_data.size }.by(1) }
+    end
+
+    describe '::process_value' do
+      let(:block_double) { double }
 
       it 'uses the feature passed' do
         add_feature_method
         expect(SuperSettings::FeatureSet.foo).to eql(set_value)
       end
-    end
 
-    describe '::process_value' do
-      it { expect { add_feature_method }.to change { value_data.size }.by(1) }
-
-      it 'uses the feature passed' do
+      it 'passes the value to a block' do
         add_feature_method
-        expect(SuperSettings::FeatureSet.foo).to eql(set_value)
+
+        expect(block_double).to receive(:test).with(set_value)
+        SuperSettings::FeatureSet.foo do |val|
+          block_double.test val
+        end
       end
     end
   end
