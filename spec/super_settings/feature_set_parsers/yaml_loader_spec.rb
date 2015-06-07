@@ -29,4 +29,21 @@ describe SuperSettings::FeatureSetLoaders::YamlLoader do
       it { expect { call_method }.to raise_error SuperSettings::Error }
     end
   end
+
+  describe '::features_json' do
+    subject(:features_json_method) do
+      SuperSettings::FeatureSetLoaders::YamlLoader.feature_json(filename)
+    end
+
+    let(:filename) { 'test' }
+
+    context 'complete data' do
+      it 'creates a JSON object from the YAML' do
+        expect(YAML).to receive(:load).with(filename)
+        expect(JSON).to receive(:parse)
+
+        SuperSettings::FeatureSetLoaders::YamlLoader.features_json(filename)
+      end
+    end
+  end
 end
