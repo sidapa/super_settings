@@ -91,12 +91,27 @@ describe SuperSettings::FeatureSet do
         expect(SuperSettings::FeatureSet.foo).to eql(set_value)
       end
 
-      it 'passes the value to a block' do
-        add_feature_method
+      context 'block calls' do
+        before(:each) { add_feature_method }
 
-        expect(block_double).to receive(:test).with(set_value)
-        SuperSettings::FeatureSet.foo do |val|
-          block_double.test val
+        context 'if passed value is true' do
+          it 'runs the block code' do
+            expect(block_double).to receive(:test).with(set_value)
+            SuperSettings::FeatureSet.foo do |val|
+              block_double.test val
+            end
+          end
+        end
+
+        context 'if passed value is false' do
+          let(:set_value) { false }
+
+          it 'does not run the block code' do
+            expect(block_double).not_to receive(:test).with(set_value)
+            SuperSettings::FeatureSet.foo do |val|
+              block_double.test val
+            end
+          end
         end
       end
     end

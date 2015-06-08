@@ -35,7 +35,7 @@ module SuperSettings
 
     def process_value(value, *args)
       toggle_value = value.send(:set?, *args)
-      block_given? ? yield(toggle_value) : toggle_value
+      block_given? && toggle_value ? yield(toggle_value) : toggle_value
     end
   end
 end
