@@ -107,10 +107,7 @@ describe SuperSettings::FeatureSet do
           let(:set_value) { false }
 
           it 'does not run the block code' do
-            expect(block_double).not_to receive(:test).with(set_value)
-            SuperSettings::FeatureSet.foo do |val|
-              block_double.test val
-            end
+            expect(SuperSettings::FeatureSet.foo { 1 }).not_to eql(1)
           end
         end
       end
