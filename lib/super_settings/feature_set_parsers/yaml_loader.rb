@@ -2,6 +2,7 @@ require 'yaml'
 require 'json'
 
 module SuperSettings
+  # Allows config loaders for feature sets
   module FeatureSetLoaders
     # Allows FeatureSet to load data from a yml file
     class YamlLoader
@@ -43,5 +44,7 @@ module SuperSettings
         end
       end
     end
+
+    SuperSettings::FeatureSet.add_config_parser(YamlLoader)
   end
 end
