@@ -7,7 +7,7 @@ module SuperSettings
     # Allows FeatureSet to load data from a yml file
     class YamlLoader
       def self.call(configuration)
-        return false unless configuration.datastore == :yaml
+        return false unless configuration.datastore_type == :yaml
 
         filename = configuration.filename
         fail Error if filename.nil?
