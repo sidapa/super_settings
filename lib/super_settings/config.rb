@@ -7,7 +7,7 @@ module SuperSettings
     # fetch! returns the value of they key if it exists. If it does not,
     # it then either yields to a block if given, or throws an exception.
     def fetch!(param, &_block)
-      return value(param) if method_exists param
+      return self[param] if method_exists param
       return yield if block_given?
 
       fail SuperSettings::Error, "#{param} does not exist"
@@ -23,8 +23,8 @@ module SuperSettings
     end
 
     # Ruby 1.9.3 does not support the [] call.
-    def value(param)
-      @table[param.to_sym]
+    def [](name)
+      @table[name.to_sym]
     end
   end
 end
