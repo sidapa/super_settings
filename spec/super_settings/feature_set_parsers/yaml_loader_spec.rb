@@ -14,7 +14,7 @@ describe SuperSettings::FeatureSetLoaders::YamlLoader do
     end
 
     let(:configuration) do
-      OpenStruct.new(datastore_type: :yaml, filename: filename)
+      SuperSettings::Config.new(datastore_type: :yaml, filename: filename)
     end
 
     context 'complete data' do
@@ -32,13 +32,15 @@ describe SuperSettings::FeatureSetLoaders::YamlLoader do
     end
 
     context 'not configured' do
-      let(:configuration) { OpenStruct.new(datastore_type: :not_yaml) }
+      let(:configuration) do
+        SuperSettings::Config.new(datastore_type: :not_yaml)
+      end
 
       it { expect(call_method).to eql(false) }
     end
 
     context 'no filename' do
-      let(:configuration) { OpenStruct.new(datastore_type: :yaml) }
+      let(:configuration) { SuperSettings::Config.new(datastore_type: :yaml) }
 
       it { expect { call_method }.to raise_error SuperSettings::Error }
     end

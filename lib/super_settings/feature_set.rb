@@ -1,5 +1,3 @@
-require 'ostruct'
-
 module SuperSettings
   # This class allows for feature toggles
   module FeatureSet
@@ -13,7 +11,7 @@ module SuperSettings
     @parsers = []
 
     def config
-      @configuration ||= OpenStruct.new
+      @configuration ||= SuperSettings::Config.new
       yield @configuration
       parse_configuration
     end
