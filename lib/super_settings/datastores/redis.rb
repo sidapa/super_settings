@@ -38,7 +38,7 @@ module SuperSettings
 
       def load_config
         {}.tap do |redis_config|
-          %i(host port db).each do |param|
+          [:host, :port, :db].each do |param|
             redis_config[param] = @config.fetch! param
           end
         end
