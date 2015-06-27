@@ -3,10 +3,10 @@ module SuperSettings
   module FeatureSetLoaders
     # Allows FeatureSet to load data from redis
     class RedisLoader
-      def self.call(configuration)
-        return false unless configuration.datastore_type == :redis
-        configuration.datastore = SuperSettings::Datastores::Redis.new(configuration)
-        configuration.datastore.load
+      def self.call(config)
+        return false unless config.datastore_type == :redis
+        config.datastore = SuperSettings::Datastores::Redis.new(config)
+        config.datastore.load
       end
     end
 
