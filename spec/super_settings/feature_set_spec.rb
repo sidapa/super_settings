@@ -112,5 +112,27 @@ describe SuperSettings::FeatureSet do
         end
       end
     end
+
+    describe '::keys' do
+      subject(:keys) { SuperSettings::FeatureSet.keys }
+
+      before(:each) { add_feature_method }
+
+      it { is_expected.to eql(Array(feature_name)) }
+    end
+
+    describe '::export' do
+      subject(:export_method) do
+        SuperSettings::FeatureSet.export
+      end
+
+      before(:each) { add_feature_method }
+
+      let(:feature_hash) do
+        { feature_name => set_value }
+      end
+
+      it { is_expected.to eql(feature_hash) }
+    end
   end
 end

@@ -35,5 +35,17 @@ module SuperSettings
       toggle_value = value.send(:set?, *args)
       block_given? && toggle_value ? yield(toggle_value) : toggle_value
     end
+
+    def keys
+      value_data.keys
+    end
+
+    def export
+      {}.tap do |export_hash|
+        keys.each do |key|
+          export_hash[key] = value_data[key].value
+        end
+      end
+    end
   end
 end
