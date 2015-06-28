@@ -1,6 +1,8 @@
 module SuperSettings
   # This class allows for feature toggles
   class Feature
+    attr_reader :value
+
     # TODO: Allow user to set a default value when using hashes
     def initialize(value)
       value_class = value.class

@@ -37,6 +37,12 @@ describe SuperSettings::Feature do
     end
   end
 
+  context '#value' do
+    subject(:value) { SuperSettings::Feature.new(toggle).value }
+
+    it { is_expected.to eql(toggle) }
+  end
+
   context '#set?' do
     subject(:feature_set) { SuperSettings::Feature.new(toggle).set?(context) }
     let(:context) { nil }
