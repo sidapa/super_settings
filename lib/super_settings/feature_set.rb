@@ -47,5 +47,14 @@ module SuperSettings
         end
       end
     end
+
+    def load
+      datastore = @configuration.datastore
+      unless datastore && datastore.respond_to?(:load)
+        fail NoMethodError, 'load not supported by datastore'
+      end
+
+      datastore.send(:load)
+    end
   end
 end

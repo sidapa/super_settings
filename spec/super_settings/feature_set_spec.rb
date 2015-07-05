@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'ostruct'
 
 describe SuperSettings::FeatureSet do
   let(:parser) { parser_double }
@@ -64,6 +65,53 @@ describe SuperSettings::FeatureSet do
     it 'calls the call method on each of the parsers' do
       expect(parser).to receive(:call).with(configuration)
       run_parse
+    end
+  end
+
+  describe '::load' do
+    let(:new_config) { OpenStruct.new(datastore: store_double) }
+    let(:store_double) { double }
+    subject(:load_method) { SuperSettings::FeatureSet.load }
+
+    before(:each) do
+      @datastore_backup = SuperSettings::FeatureSet
+                          .instance_variable_get(:@configuration).dup
+
+      SuperSettings::FeatureSet
+        .instance_variable_set(:@configuration, new_config)
+    end
+
+    after(:each) do
+      SuperSettings::FeatureSet
+        .instance_variable_set(:@configuration, @datastore_backup)
+    end
+
+    context 'datastore does not support load' do
+      it 'raises NoMethodError' do
+        allow(store_double).to receive(:respond_to?).with(:load)
+          .and_return(false)
+
+        expect { load_method }.to raise_error NoMethodError
+      end
+    end
+
+    context 'no datastore' do
+      let(:store_double) { nil }
+
+      it 'raises NoMethodError' do
+        expect { load_method }.to raise_error NoMethodError
+      end
+    end
+
+    context 'datastore supports load' do
+      it 'calls load on the datastore' do
+        allow(store_double).to receive(:respond_to?).with(:load)
+          .and_return(true)
+
+        expect(store_double).to receive(:load)
+
+        load_method
+      end
     end
   end
 
